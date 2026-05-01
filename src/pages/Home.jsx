@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useRecipes } from '../hooks/useRecipes'
 import { useFavorites } from '../hooks/useFavorites'
@@ -36,11 +36,14 @@ export default function Home() {
   const navigate = useNavigate()
 
   const [selectedIngredients, setSelectedIngredients] = useState([])
+  const [visibleCount, setVisibleCount] = useState(12)
 
   const { recipes: filtered, isFallback } = useMemo(
     () => filterRecipes(recipes, selectedIngredients),
     [recipes, selectedIngredients]
   )
+
+  useEffect(() => setVisibleCount(12), [selectedIngredients])
 
   const handleRandom = () => {
     if (filtered.length === 0) return
@@ -148,10 +151,10 @@ export default function Home() {
             <span className="text-sm text-warm-400">{filtered.length} 道</span>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filtered.map((recipe, i) => (
+            {filtered.slice(0, visibleCount).map((recipe, i) => (
               <div
                 key={recipe.id}
-                className="relative animate-fade-in-up"
+                className="animate-fade-in-up"
                 style={{ animationDelay: `${Math.min(i * 50, 300)}ms` }}
               >
                 <RecipeCard
@@ -162,6 +165,17 @@ export default function Home() {
               </div>
             ))}
           </div>
+          {visibleCount < filtered.length && (
+            <div className="text-center mt-6">
+              <button
+                onClick={() => setVisibleCount(prev => prev + 12)}
+                className="px-6 py-2.5 rounded-xl text-sm font-medium text-primary-600 bg-primary-50
+                           hover:bg-primary-100 transition-colors duration-150 cursor-pointer"
+              >
+                加载更多 ({filtered.length - visibleCount} 道剩余)
+              </button>
+            </div>
+          )}
         </section>
       )}
     </div>

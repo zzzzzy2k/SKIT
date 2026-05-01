@@ -36,12 +36,20 @@ export default function RecipeCard({ recipe, isFavorite, onToggleFavorite }) {
 
   return (
     <div className="glass-card rounded-2xl overflow-hidden transition-all duration-300 cursor-pointer group">
-      {/* Category badge + difficulty */}
+      {/* Header: category + difficulty + heart */}
       <div className="px-4 pt-4 pb-2 flex items-center justify-between">
         <span className="text-xs font-medium text-primary-600 bg-primary-50 px-2 py-0.5 rounded-full">
           {categoryLabels[recipe.category] || recipe.category}
         </span>
-        <StarRating difficulty={recipe.difficulty} />
+        <div className="flex items-center gap-2">
+          <StarRating difficulty={recipe.difficulty} />
+          {onToggleFavorite && (
+            <HeartButton
+              isFavorite={isFavorite}
+              onClick={(e) => { e.preventDefault(); onToggleFavorite(recipe.id) }}
+            />
+          )}
+        </div>
       </div>
 
       {/* Content */}
@@ -60,16 +68,6 @@ export default function RecipeCard({ recipe, isFavorite, onToggleFavorite }) {
           )}
         </div>
       </Link>
-
-      {/* Favorite button */}
-      {onToggleFavorite && (
-        <div className="absolute top-3 right-3">
-          <HeartButton
-            isFavorite={isFavorite}
-            onClick={(e) => { e.preventDefault(); onToggleFavorite(recipe.id) }}
-          />
-        </div>
-      )}
     </div>
   )
 }
