@@ -1,18 +1,210 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
 
 @theme {
+  /* Warm organic food palette */
   --color-primary-50: #fef7ee;
   --color-primary-100: #feecd3;
   --color-primary-200: #fbd5a5;
   --color-primary-300: #f8b76d;
   --color-primary-400: #f49132;
-  --color-primary-500: #f1750f;
-  --color-primary-600: #d85b09;
-  --color-primary-700: #b4430c;
-  --color-primary-800: #903610;
-  --color-primary-900: #742e10;
+  --color-primary-500: #e67e22;
+  --color-primary-600: #d35400;
+  --color-primary-700: #a04000;
+  --color-primary-800: #7d3200;
+  --color-primary-900: #5c2500;
+
+  /* Accent: warm terracotta */
+  --color-accent-50: #fdf2ef;
+  --color-accent-100: #fbe0d8;
+  --color-accent-200: #f5b8a4;
+  --color-accent-300: #e8917a;
+  --color-accent-400: #d4724f;
+  --color-accent-500: #c0613a;
+  --color-accent-600: #a04d2e;
+  --color-accent-700: #7d3c24;
+  --color-accent-800: #5e2e1c;
+  --color-accent-900: #3f1f13;
+
+  /* Olive green for nature */
+  --color-olive-50: #f6f7f0;
+  --color-olive-100: #e8ebd6;
+  --color-olive-200: #d1d8ad;
+  --color-olive-300: #b4be7e;
+  --color-olive-400: #97a356;
+  --color-olive-500: #7a8740;
+  --color-olive-600: #5f6a31;
+  --color-olive-700: #485126;
+  --color-olive-800: #33391c;
+  --color-olive-900: #1e2211;
+
+  /* Warm neutrals */
+  --color-warm-50: #faf8f5;
+  --color-warm-100: #f5f0e8;
+  --color-warm-200: #ebe1d2;
+  --color-warm-300: #d9cab3;
+  --color-warm-400: #c4ae91;
+  --color-warm-500: #a8916e;
+  --color-warm-600: #8b7555;
+  --color-warm-700: #6e5b42;
+  --color-warm-800: #514330;
+  --color-warm-900: #352c20;
+
+  /* Typography */
+  --font-serif: 'Noto Serif SC', 'Georgia', serif;
+  --font-sans: 'Inter', 'system-ui', '-apple-system', sans-serif;
 }
 
+/* ── Base ────────────────────────────────────────── */
+
 body {
-  @apply bg-gray-50 text-gray-900 min-h-screen;
+  @apply bg-warm-50 text-warm-900 min-h-screen font-sans;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Glass Effect Utilities ──────────────────────── */
+
+.glass {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.glass-strong {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(24px) saturate(200%);
+  -webkit-backdrop-filter: blur(24px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(12px) saturate(160%);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.04),
+    0 1px 3px rgba(0, 0, 0, 0.02),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.glass-card:hover {
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow:
+    0 8px 40px rgba(0, 0, 0, 0.06),
+    0 2px 6px rgba(0, 0, 0, 0.03),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+/* ── Gradient Backgrounds ────────────────────────── */
+
+.bg-hero-gradient {
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(248, 183, 109, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(230, 126, 34, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 80%, rgba(180, 190, 126, 0.08) 0%, transparent 50%),
+    linear-gradient(180deg, #faf8f5 0%, #f5f0e8 100%);
+}
+
+.bg-section-warm {
+  background: linear-gradient(135deg, rgba(254, 236, 211, 0.4) 0%, rgba(245, 240, 232, 0.3) 100%);
+}
+
+/* ── Typography ──────────────────────────────────── */
+
+.font-display {
+  font-family: 'Noto Serif SC', 'Georgia', serif;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+/* ── Custom Scrollbar ────────────────────────────── */
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.12);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+/* ── Animation Utilities ─────────────────────────── */
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.5s ease-out both;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.4s ease-out both;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Staggered animation delays */
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+
+/* ── Reduced Motion ──────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── Focus States ────────────────────────────────── */
+
+:focus-visible {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ── Selection ───────────────────────────────────── */
+
+::selection {
+  background: rgba(230, 126, 34, 0.2);
+  color: inherit;
 }

@@ -27,11 +27,18 @@ export default function Favorites() {
   }
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">我的收藏</h1>
+    <div className="space-y-6 animate-fade-in">
+      <div className="flex items-center justify-between">
+        <h1 className="font-display text-2xl font-bold text-warm-800">我的收藏</h1>
+        <span className="text-sm text-warm-400">{favoriteRecipes.length} 道</span>
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {favoriteRecipes.map(recipe => (
-          <div key={recipe.id} className="relative">
+        {favoriteRecipes.map((recipe, i) => (
+          <div
+            key={recipe.id}
+            className="relative animate-fade-in-up"
+            style={{ animationDelay: `${i * 60}ms` }}
+          >
             <RecipeCard
               recipe={recipe}
               isFavorite={isFavorite(recipe.id)}
