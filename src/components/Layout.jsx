@@ -9,6 +9,15 @@ function HomeIcon({ className }) {
   )
 }
 
+function InfoIcon({ className }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="10" />
+      <path d="M12 16v-4M12 8h.01" />
+    </svg>
+  )
+}
+
 function HeartIcon({ className, filled }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill={filled ? "currentColor" : "none"} stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -65,6 +74,19 @@ export default function Layout() {
           >
             <HeartIcon className="w-5 h-5" filled={false} />
             <span className="text-xs font-medium">收藏</span>
+          </NavLink>
+          <NavLink
+            to="/about"
+            className={({ isActive }) =>
+              `flex-1 flex flex-col items-center gap-0.5 py-2 rounded-xl transition-all duration-200 ${
+                isActive
+                  ? 'text-olive-600 bg-olive-50/60'
+                  : 'text-warm-400 hover:text-warm-600'
+              }`
+            }
+          >
+            <InfoIcon className="w-5 h-5" />
+            <span className="text-xs font-medium">说明</span>
           </NavLink>
         </div>
       </nav>
