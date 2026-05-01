@@ -22,3 +22,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Claude / AI tools
+.claude
+
+# Generated data
+public/recipes.json
+errors.log
