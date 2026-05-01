@@ -18,14 +18,6 @@ function XIcon({ className }) {
   )
 }
 
-function ChevronDown({ className }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M6 9l6 6 6-6" />
-    </svg>
-  )
-}
-
 const CATEGORIES = [
   { key: 'all', label: '全部' },
   { key: 'vegetable', label: '蔬菜' },
@@ -135,15 +127,28 @@ export default function IngredientFilter({ recipes, selected, onChange }) {
       {/* Header */}
       <div className="flex items-center justify-between mb-3">
         <h2 className="font-display font-semibold text-warm-700">按食材筛选</h2>
-        {selected.length > 0 && (
-          <button
-            onClick={() => onChange([])}
-            className="flex items-center gap-1 text-sm text-primary-500 hover:text-primary-600 transition-colors cursor-pointer"
-          >
-            <XIcon className="w-3.5 h-3.5" />
-            <span>清除全部 ({selected.length})</span>
-          </button>
-        )}
+        <div className="flex items-center gap-3">
+          <span className="text-xs text-warm-400">
+            {expanded || !hasMore ? filtered.length : `${visibleItems.length}/${filtered.length}`} 种
+          </span>
+          {hasMore && (
+            <button
+              onClick={() => setExpanded(!expanded)}
+              className="text-xs font-medium text-primary-500 hover:text-primary-600 transition-colors cursor-pointer"
+            >
+              {expanded ? '收起' : '展开全部'}
+            </button>
+          )}
+          {selected.length > 0 && (
+            <button
+              onClick={() => onChange([])}
+              className="flex items-center gap-1 text-xs text-warm-400 hover:text-primary-500 transition-colors cursor-pointer"
+            >
+              <XIcon className="w-3 h-3" />
+              <span>清除 ({selected.length})</span>
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Search input */}
@@ -222,17 +227,6 @@ export default function IngredientFilter({ recipes, selected, onChange }) {
         )}
       </div>
 
-      {/* Expand/collapse */}
-      {hasMore && (
-        <button
-          onClick={() => setExpanded(!expanded)}
-          className="flex items-center gap-1 mx-auto mt-3 px-4 py-1.5 text-sm text-warm-500 hover:text-primary-500
-                     transition-colors cursor-pointer"
-        >
-          <span>{expanded ? '收起' : `展开全部 (${filtered.length})`}</span>
-          <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${expanded ? 'rotate-180' : ''}`} />
-        </button>
-      )}
     </div>
   )
 }
