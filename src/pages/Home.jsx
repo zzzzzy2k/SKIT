@@ -165,14 +165,14 @@ export default function Home() {
               </div>
             ))}
           </div>
-          {visibleCount < filtered.length && (
+          {filtered.length > 12 && (
             <div className="text-center mt-6">
               <button
-                onClick={() => setVisibleCount(prev => prev + 12)}
+                onClick={() => setVisibleCount(visibleCount >= filtered.length ? 12 : prev => prev + 12)}
                 className="px-6 py-2.5 rounded-xl text-sm font-medium text-primary-600 bg-primary-50
                            hover:bg-primary-100 transition-colors duration-150 cursor-pointer"
               >
-                加载更多 ({filtered.length - visibleCount} 道剩余)
+                {visibleCount >= filtered.length ? '收起' : `加载更多 (${filtered.length - visibleCount} 道剩余)`}
               </button>
             </div>
           )}
