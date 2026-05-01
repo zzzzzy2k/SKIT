@@ -148,7 +148,19 @@ export default function Home() {
             <h2 className="font-display text-lg font-semibold text-warm-700">
               {selectedIngredients.length > 0 ? '筛选结果' : '全部菜谱'}
             </h2>
-            <span className="text-sm text-warm-400">{filtered.length} 道</span>
+            <div className="flex items-center gap-3">
+              <span className="text-sm text-warm-400">
+                {visibleCount >= filtered.length ? filtered.length : `${visibleCount}/${filtered.length}`} 道
+              </span>
+              {filtered.length > 12 && (
+                <button
+                  onClick={() => setVisibleCount(visibleCount >= filtered.length ? 12 : filtered.length)}
+                  className="text-xs font-medium text-primary-500 hover:text-primary-600 transition-colors cursor-pointer"
+                >
+                  {visibleCount >= filtered.length ? '收起' : '展开全部'}
+                </button>
+              )}
+            </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {filtered.slice(0, visibleCount).map((recipe, i) => (
@@ -165,17 +177,6 @@ export default function Home() {
               </div>
             ))}
           </div>
-          {filtered.length > 12 && (
-            <div className="text-center mt-6">
-              <button
-                onClick={() => setVisibleCount(visibleCount >= filtered.length ? 12 : prev => prev + 12)}
-                className="px-6 py-2.5 rounded-xl text-sm font-medium text-primary-600 bg-primary-50
-                           hover:bg-primary-100 transition-colors duration-150 cursor-pointer"
-              >
-                {visibleCount >= filtered.length ? '收起' : `加载更多 (${filtered.length - visibleCount} 道剩余)`}
-              </button>
-            </div>
-          )}
         </section>
       )}
     </div>

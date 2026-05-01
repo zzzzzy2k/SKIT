@@ -2,12 +2,13 @@ import { Link } from 'react-router-dom'
 
 function StarRating({ difficulty }) {
   return (
-    <div className="flex items-center gap-0.5">
-      {Array.from({ length: 5 }).map((_, i) => (
-        <svg key={i} className="w-3.5 h-3.5" viewBox="0 0 24 24" fill={i < difficulty ? '#f59e0b' : 'none'} stroke={i < difficulty ? '#f59e0b' : '#d1d5db'} strokeWidth="2">
+    <div className="flex items-center gap-1">
+      {Array.from({ length: difficulty }).map((_, i) => (
+        <svg key={i} className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" strokeWidth="2">
           <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
         </svg>
       ))}
+      <span className="text-xs text-warm-400 ml-0.5">{difficulty}/5</span>
     </div>
   )
 }
@@ -35,7 +36,10 @@ export default function RecipeCard({ recipe, isFavorite, onToggleFavorite }) {
   }
 
   return (
-    <div className="glass-card rounded-2xl overflow-hidden transition-all duration-300 cursor-pointer group">
+    <Link
+      to={`/recipe/${encodeURIComponent(recipe.id)}`}
+      className="glass-card rounded-2xl overflow-hidden transition-all duration-300 cursor-pointer group block"
+    >
       {/* Header: category + difficulty + heart */}
       <div className="px-4 pt-4 pb-2 flex items-center justify-between">
         <span className="text-xs font-medium text-primary-600 bg-primary-50 px-2 py-0.5 rounded-full">
@@ -46,14 +50,14 @@ export default function RecipeCard({ recipe, isFavorite, onToggleFavorite }) {
           {onToggleFavorite && (
             <HeartButton
               isFavorite={isFavorite}
-              onClick={(e) => { e.preventDefault(); onToggleFavorite(recipe.id) }}
+              onClick={(e) => { e.preventDefault(); e.stopPropagation(); onToggleFavorite(recipe.id) }}
             />
           )}
         </div>
       </div>
 
       {/* Content */}
-      <Link to={`/recipe/${encodeURIComponent(recipe.id)}`} className="block px-4 pb-4">
+      <div className="px-4 pb-4">
         <h3 className="font-display text-lg font-semibold text-warm-800 mb-2 group-hover:text-primary-600 transition-colors duration-200">
           {recipe.title}
         </h3>
@@ -67,7 +71,7 @@ export default function RecipeCard({ recipe, isFavorite, onToggleFavorite }) {
             <span className="text-xs text-warm-400">+{recipe.ingredients.length - 5}</span>
           )}
         </div>
-      </Link>
-    </div>
+      </div>
+    </Link>
   )
 }
