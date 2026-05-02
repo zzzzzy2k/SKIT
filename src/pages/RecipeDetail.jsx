@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react'
 import { useParams, Link } from 'react-router-dom'
+import { marked } from 'marked'
 import { useRecipeDetail } from '../hooks/useRecipeDetail'
 import { useFavorites } from '../hooks/useFavorites'
 import { scaleIngredients } from '../utils/scaleIngredient'
@@ -167,7 +168,7 @@ export default function RecipeDetail() {
               <span className="flex-shrink-0 w-7 h-7 bg-accent-50 text-accent-600 rounded-lg flex items-center justify-center text-sm font-semibold">
                 {i + 1}
               </span>
-              <p className="text-warm-600 leading-relaxed pt-0.5">{step}</p>
+              <p className="text-warm-600 leading-relaxed pt-0.5 step-content" dangerouslySetInnerHTML={{ __html: marked.parseInline(step) }} />
             </li>
           ))}
         </ol>
@@ -184,7 +185,7 @@ export default function RecipeDetail() {
             {recipe.tips.map((tip, i) => (
               <li key={i} className="flex gap-3 text-sm text-warm-600 leading-relaxed">
                 <span className="w-1.5 h-1.5 bg-warm-300 rounded-full flex-shrink-0 mt-2" />
-                <span>{tip}</span>
+                <span className="step-content" dangerouslySetInnerHTML={{ __html: marked.parseInline(tip) }} />
               </li>
             ))}
           </ul>

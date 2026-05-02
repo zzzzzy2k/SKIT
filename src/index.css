@@ -208,3 +208,42 @@ body {
   background: rgba(230, 126, 34, 0.2);
   color: inherit;
 }
+
+/* ── Markdown Content in Steps/Tips ─────────────── */
+
+.step-content a {
+  color: var(--color-primary-600);
+  text-decoration: underline;
+  text-decoration-color: rgba(230, 126, 34, 0.3);
+  text-underline-offset: 2px;
+}
+
+.step-content a:hover {
+  text-decoration-color: var(--color-primary-600);
+}
+
+.step-content strong,
+.step-content b {
+  font-weight: 600;
+  color: var(--color-warm-700);
+}
+
+.step-content em,
+.step-content i {
+  font-style: italic;
+  color: var(--color-warm-600);
+}
+
+.step-content code {
+  font-size: 0.85em;
+  background: rgba(0, 0, 0, 0.06);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+}
+
+.step-content img {
+  max-width: 100%;
+  border-radius: 8px;
+  margin: 0.5em 0;
+}
