@@ -111,6 +111,7 @@ function findSectionByHeadings(tokens, keywords) {
 function extractListItems(tokens) {
   const items = [];
   for (const token of tokens) {
+    if (token.type === 'heading') continue;  // skip sub-headings (### 原料, ### 工具)
     if (token.type === 'list') {
       for (const item of token.items) {
         const text = extractText(item).trim();
@@ -165,9 +166,12 @@ function parseCalcLine(text) {
 function splitIngredientLine(line) {
   let text = line
     .replace(/`/g, '')
-    .replace(/^(主料|辅料|炒料|其他配料?|调料|香料)[：:]\s*/, '')
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+    .replace(/^!?\[.*?\]\(.*?\)\s*/, '')
+    .replace(/^(主料|辅料|炒料|其他配料?|调料|香料|必备|可选|原料|全香料|面食材料|菜类材料)[：:]\s*/, '')
     .replace(/[，,]\s*$/, '')
     .replace(/、\s*$/, '')
+    .replace(/—.*/, '')
     .trim();
 
   // or/或者/或 → 取第一个选项（仅匹配括号外的 or）
@@ -181,12 +185,39 @@ function splitIngredientLine(line) {
   }
   text = text.replace(/\s+and\/or\s.+$/, '');
 
-  const parts = text.split('、').map(s => s.trim()).filter(Boolean);
+  // name：qty 格式 → 转为空格
+  text = text.replace(/：(\s*\d)/g, ' $1');
+
+  // 按顿号和中文逗号分割多个食材
+  const parts = text.split(/[、，]/).map(s => s.trim()).filter(Boolean);
   return parts.length > 0 ? parts : [line.trim()];
 }
 
 function isSeasoning(name) { return SEASONINGS.has(name); }
 function isTool(text) { return TOOL_KEYWORDS.some(kw => text.includes(kw)); }
+
+const SUB_HEADING_KEYWORDS = new Set(['原料', '食材', '配料', '材料', '工具', '主料', '辅料', '调料', '可选', '必备']);
+
+function cleanIngredientName(raw) {
+  let name = raw
+    .split('\n')[0]                    // truncate at first newline
+    .replace(/（.*?）/g, '')           // remove parenthetical
+    .replace(/[（(][^）)]*$/g, '')     // remove unclosed paren
+    .replace(/^[-*+]\s*/, '')          // remove list markers
+    .replace(/^[：:]\s*/, '')          // remove leading colon
+    .replace(/\s*[：:]\s*$/, '')       // remove trailing colon
+    .trim();
+  // filter out sub-heading artifacts and notes
+  if (SUB_HEADING_KEYWORDS.has(name)) return '';
+  if (name.startsWith('注：') || name.startsWith('注:')) return '';
+  if (name.startsWith('可以搜索')) return '';
+  // name：description → keep just the name part (e.g. 花椒：可选 → 花椒)
+  if (/^[^：:]+[：:]/.test(name)) {
+    const part = name.split(/[：:]/)[0].trim();
+    if (part.length >= 1 && part.length <= 6) return part;
+  }
+  return name;
+}
 
 function parseDifficulty(tokens) {
   for (const token of tokens) {
@@ -241,7 +272,8 @@ function parseRecipe(filePath, markdown) {
       if (isTool(part)) { tools.push(part); continue; }
 
       const parsed = parseIngredient(part);
-      const nameClean = parsed.name.replace(/（.*?）/g, '').trim();
+      const nameClean = cleanIngredientName(parsed.name);
+      if (!nameClean) continue;  // skip sub-heading artifacts
       const calcEntry = quantityMap[nameClean];
 
       ingredients.push(nameClean);

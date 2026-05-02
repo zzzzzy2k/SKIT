@@ -173,7 +173,7 @@ export default function IngredientFilter({ recipes, selected, onChange }) {
           return (
             <button
               key={cat.key}
-              onClick={() => { setActiveCategory(cat.key); setExpanded(false) }}
+              onClick={() => setActiveCategory(cat.key)}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-150 cursor-pointer ${
                 activeCategory === cat.key
                   ? 'bg-primary-500 text-white shadow-sm'
