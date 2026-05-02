@@ -1,8 +1,9 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { marked } from 'marked'
 import { useRecipeDetail } from '../hooks/useRecipeDetail'
 import { useFavorites } from '../hooks/useFavorites'
+import { useHistory } from '../hooks/useHistory'
 import { scaleIngredients } from '../utils/scaleIngredient'
 import { DEFAULT_SERVINGS } from '../utils/constants'
 import ServingSelector from '../components/ServingSelector'
@@ -60,7 +61,12 @@ export default function RecipeDetail() {
   const decodedId = decodeURIComponent(id)
   const { recipe, loading, error } = useRecipeDetail(decodedId)
   const { isFavorite, toggleFavorite } = useFavorites()
+  const { addToHistory } = useHistory()
   const [servings, setServings] = useState(DEFAULT_SERVINGS)
+
+  useEffect(() => {
+    if (recipe) addToHistory(recipe.id)
+  }, [recipe])
   const [showShoppingList, setShowShoppingList] = useState(false)
 
   const scaledIngredients = useMemo(

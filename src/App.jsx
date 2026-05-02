@@ -5,6 +5,7 @@ import ErrorBoundary from './components/ErrorBoundary'
 import Home from './pages/Home'
 import RecipeDetail from './pages/RecipeDetail'
 import Favorites from './pages/Favorites'
+import History from './pages/History'
 import About from './pages/About'
 import NotFound from './pages/NotFound'
 
@@ -18,6 +19,7 @@ export default function App() {
             <Route index element={<Home />} />
             <Route path="recipe/:id" element={<RecipeDetail />} />
             <Route path="favorites" element={<Favorites />} />
+            <Route path="history" element={<History />} />
             <Route path="about" element={<About />} />
             <Route path="*" element={<NotFound />} />
           </Route>

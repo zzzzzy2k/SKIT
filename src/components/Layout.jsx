@@ -26,6 +26,15 @@ function HeartIcon({ className, filled }) {
   )
 }
 
+function ClockIcon({ className }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="10" />
+      <polyline points="12 6 12 12 16 14" />
+    </svg>
+  )
+}
+
 export default function Layout() {
   return (
     <div className="min-h-screen flex flex-col bg-hero-gradient">
@@ -47,7 +56,7 @@ export default function Layout() {
 
       {/* Floating glass bottom nav */}
       <nav className="fixed bottom-0 left-0 right-0 z-50 px-4 pb-3">
-        <div className="max-w-sm mx-auto glass-strong rounded-2xl px-2 py-2 flex items-center shadow-lg">
+        <div className="max-w-md mx-auto glass-strong rounded-2xl px-2 py-2 flex items-center shadow-lg">
           <NavLink
             to="/"
             end
@@ -78,6 +87,19 @@ export default function Layout() {
                 <span className="text-xs">收藏</span>
               </>
             )}
+          </NavLink>
+          <NavLink
+            to="/history"
+            className={({ isActive }) =>
+              `flex-1 flex flex-col items-center gap-1 py-2 rounded-xl transition-all duration-200 ${
+                isActive
+                  ? 'text-warm-600 bg-warm-100/70 shadow-sm font-semibold'
+                  : 'text-warm-500 hover:text-warm-700 hover:bg-warm-100/50'
+              }`
+            }
+          >
+            <ClockIcon className="w-5.5 h-5.5" />
+            <span className="text-xs">历史</span>
           </NavLink>
           <NavLink
             to="/about"
