@@ -203,6 +203,25 @@ export default function About() {
           </p>
         </div>
       </section>
+
+      {/* Buy me a coffee */}
+      <section className="glass-card rounded-xl p-6 text-center">
+        <div className="text-3xl mb-3">☕</div>
+        <h2 className="font-display text-lg font-semibold text-warm-700 mb-2">请作者喝杯咖啡</h2>
+        <p className="text-sm text-warm-500 mb-5">
+          如果「食刻」帮到了你，欢迎请作者喝杯咖啡~
+        </p>
+        <div className="flex justify-center gap-6">
+          <div className="text-center">
+            <img src="/alipay.png" alt="支付宝收款码" className="w-40 h-40 rounded-xl shadow-md" />
+            <p className="text-xs text-warm-400 mt-2">支付宝</p>
+          </div>
+          <div className="text-center">
+            <img src="/wechat.png" alt="微信收款码" className="w-40 h-40 rounded-xl shadow-md" />
+            <p className="text-xs text-warm-400 mt-2">微信</p>
+          </div>
+        </div>
+      </section>
     </div>
   )
 }

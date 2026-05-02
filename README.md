@@ -108,6 +108,16 @@ SKIT/
 
 本项目代码采用 **MIT 许可证**，详见 [LICENSE](./LICENSE) 文件。
 
+## ☕ 请作者喝杯咖啡
+
+如果「食刻」帮到了你，欢迎请作者喝杯咖啡~
+
+<p align="center">
+  <img src="public/alipay.png" width="200" alt="支付宝收款码" />
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="public/wechat.png" width="200" alt="微信收款码" />
+</p>
+
 ## 💖 致谢
 
 - 🙏 感谢 [HowToCook](https://github.com/Anduin2017/HowToCook) 提供的结构化菜谱数据
