@@ -166,7 +166,7 @@ export default function Home() {
             {filtered.slice(0, visibleCount).map((recipe, i) => (
               <div
                 key={recipe.id}
-                className="animate-fade-in-up"
+                className="animate-fade-in-up h-full"
                 style={{ animationDelay: `${Math.min(i * 50, 300)}ms` }}
               >
                 <RecipeCard

@@ -38,10 +38,10 @@ export default function RecipeCard({ recipe, isFavorite, onToggleFavorite }) {
   return (
     <Link
       to={`/recipe/${encodeURIComponent(recipe.id)}`}
-      className="glass-card rounded-2xl overflow-hidden transition-all duration-300 cursor-pointer group block"
+      className="glass-card rounded-2xl overflow-hidden transition-all duration-300 cursor-pointer group block h-full flex flex-col"
     >
       {/* Header: category + difficulty + heart */}
-      <div className="px-4 pt-4 pb-2 flex items-center justify-between">
+      <div className="px-4 pt-4 pb-2 flex items-center justify-between flex-shrink-0">
         <span className="text-xs font-medium text-primary-600 bg-primary-50 px-2 py-0.5 rounded-full">
           {categoryLabels[recipe.category] || recipe.category}
         </span>
@@ -57,11 +57,11 @@ export default function RecipeCard({ recipe, isFavorite, onToggleFavorite }) {
       </div>
 
       {/* Content */}
-      <div className="px-4 pb-4">
-        <h3 className="font-display text-lg font-semibold text-warm-800 mb-2 group-hover:text-primary-600 transition-colors duration-200">
+      <div className="px-4 pb-4 flex flex-col flex-1">
+        <h3 className="font-display text-lg font-semibold text-warm-800 mb-2 group-hover:text-primary-600 transition-colors duration-200 line-clamp-2 flex-shrink-0">
           {recipe.title}
         </h3>
-        <div className="flex flex-wrap gap-1.5">
+        <div className="flex flex-wrap gap-1.5 mt-auto">
           {recipe.ingredients.slice(0, 5).map((ing, i) => (
             <span key={i} className="text-xs text-warm-500 bg-warm-100/60 px-2 py-0.5 rounded-full">
               {ing}
