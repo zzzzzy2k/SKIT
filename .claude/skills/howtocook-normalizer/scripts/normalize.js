@@ -45,6 +45,7 @@ import { marked } from 'marked';
 const INGREDIENT_HEADINGS = ['必备原料和工具', '原材料', '原料', '食材', '配料'];
 const CALC_HEADINGS = ['计算'];
 const STEP_HEADINGS = ['操作步骤', '步骤', '做法', '制作'];
+const TIPS_HEADINGS = ['附加内容', '附加', '提示', '小贴士', '注意事项'];
 
 const SEASONINGS = new Set([
   '盐', '糖', '酱油', '生抽', '老抽', '醋', '料酒', '蚝油',
@@ -237,10 +238,13 @@ function parseRecipe(filePath, markdown) {
   const steps = extractListItems(stepSection);
   if (steps.length === 0) throw new Error('Step section is empty');
 
+  const tipsSection = findSectionByHeadings(tokens, TIPS_HEADINGS);
+  const tips = extractListItems(tipsSection);
+
   return {
     id: title, title, category, servings,
     ingredients, ingredients_with_quantity, parsed_ingredients,
-    steps, tools, difficulty: parseDifficulty(tokens),
+    steps, tips, tools, difficulty: parseDifficulty(tokens),
   };
 }
 

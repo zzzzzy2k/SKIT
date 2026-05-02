@@ -174,6 +174,24 @@ export default function RecipeDetail() {
         </ol>
       </div>
 
+      {/* Tips */}
+      {recipe.tips && recipe.tips.length > 0 && (
+        <div className="glass-card rounded-2xl p-5">
+          <h2 className="font-display text-lg font-semibold text-warm-700 mb-4 flex items-center gap-2">
+            <span className="w-1 h-5 bg-warm-400 rounded-full" />
+            附加内容
+          </h2>
+          <ul className="space-y-2.5">
+            {recipe.tips.map((tip, i) => (
+              <li key={i} className="flex gap-3 text-sm text-warm-600 leading-relaxed">
+                <span className="w-1.5 h-1.5 bg-warm-300 rounded-full flex-shrink-0 mt-2" />
+                <span>{tip}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
       {/* Action button */}
       <button
         onClick={() => setShowShoppingList(true)}
