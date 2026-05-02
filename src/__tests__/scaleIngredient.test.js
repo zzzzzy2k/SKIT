@@ -16,7 +16,7 @@ describe('scaleIngredient', () => {
   it('returns null qty for non-numeric ingredients', () => {
     const result = scaleIngredient({ name: '盐', qty: null, unit: null, raw: '适量' }, 4)
     expect(result.qty).toBeNull()
-    expect(result.display).toBe('~适量')
+    expect(result.display).toBe('适量')
   })
 
   it('handles serving count of 1 (no scaling)', () => {

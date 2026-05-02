@@ -23,6 +23,25 @@ const TOOL_KEYWORDS = ['锅', '刀', '砧板', '碗', '盘', '勺', '铲', '盆'
 
 const NON_NUMERIC_QTY = { '适量': null, '少许': null, '一些': null, '若干': null, '按需': null };
 
+const UNIT_NORMALIZE = {
+  '克': 'g', '千克': 'kg', '公斤': 'kg',
+  '毫升': 'ml', 'mL': 'ml', 'ML': 'ml',
+  '汤匙': '勺', '大勺': '勺', '小勺': '勺', '茶匙': '勺',
+  '棵': '颗',
+};
+
+function cleanUnit(raw) {
+  if (!raw) return '';
+  let unit = raw
+    .replace(/[（(].*?[）)]/g, '')   // 去掉括号注释：（一小块）（可选）
+    .replace(/[*×xX]\s*份数/g, '')   // 去掉 *份数
+    .replace(/，.*$/g, '')            // 去掉逗号后内容：g，用于碗汁
+    .replace(/[。.、]$/g, '')         // 去掉尾部标点
+    .replace(/\s+/g, '')             // 去掉空格
+    .trim();
+  return UNIT_NORMALIZE[unit] || unit;
+}
+
 const errors = [];
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
@@ -107,13 +126,13 @@ function extractListItems(tokens) {
 // ── Ingredient parsing ───────────────────────────────────────────────────────
 
 function parseIngredient(text) {
-  const cleaned = text.replace(/^[-*]\s*/, '').trim();
+  const cleaned = text.replace(/^[-*+]\s*/, '').trim();
   const match = cleaned.match(/^(.+?)\s+(\d+(?:\.\d+)?)\s*(.*)$/);
 
   if (match) {
     const name = match[1].trim();
     const qty = parseFloat(match[2]);
-    const unit = match[3].trim() || '';
+    const unit = cleanUnit(match[3]);
     return { name, qty, unit, raw: cleaned };
   }
 
@@ -129,7 +148,7 @@ function parseIngredient(text) {
 }
 
 function parseCalcLine(text) {
-  const cleaned = text.replace(/^[-*]\s*/, '').trim();
+  const cleaned = text.replace(/^[-*+]\s*/, '').trim();
 
   // Match: "鸡翅 10 ～ 12 只" or "可乐 500ml" or "大蒜 2-3 瓣"
   const match = cleaned.match(/^(.+?)\s+(\d+(?:\.\d+)?)(?:\s*[～~\-]\s*\d+(?:\.\d+)?)?\s*(.*)$/);
@@ -137,7 +156,7 @@ function parseCalcLine(text) {
   if (match) {
     const name = match[1].replace(/（.*?）/g, '').trim();
     const qty = parseFloat(match[2]);
-    const unit = match[3].trim() || '';
+    const unit = cleanUnit(match[3]);
     return { name, qty, unit, raw: cleaned };
   }
 

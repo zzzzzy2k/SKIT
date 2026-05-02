@@ -9,27 +9,27 @@ describe('generateShoppingList', () => {
     ]
     const result = generateShoppingList(ingredients)
     expect(result).toHaveLength(2)
-    expect(result[0]).toEqual({ name: '鸡蛋', text: '6个' })
+    expect(result[0]).toEqual({ name: '鸡蛋', text: '鸡蛋 6个' })
   })
 
-  it('uses display field when qty is null', () => {
+  it('shows 适量 when qty is null', () => {
     const ingredients = [
-      { name: '盐', qty: null, unit: null, display: '~适量' },
+      { name: '盐', qty: null, unit: null, display: '适量' },
     ]
     const result = generateShoppingList(ingredients)
-    expect(result[0].text).toBe('~适量')
+    expect(result[0].text).toBe('盐 适量')
   })
 })
 
 describe('formatShoppingList', () => {
   it('formats list as plain text', () => {
     const items = [
-      { name: '鸡蛋', text: '6个' },
-      { name: '番茄', text: '4个' },
+      { name: '鸡蛋', text: '鸡蛋 6个' },
+      { name: '番茄', text: '番茄 4个' },
     ]
     const result = formatShoppingList(items, '番茄炒蛋')
     expect(result).toContain('番茄炒蛋')
-    expect(result).toContain('6个')
-    expect(result).toContain('4个')
+    expect(result).toContain('鸡蛋 6个')
+    expect(result).toContain('番茄 4个')
   })
 })

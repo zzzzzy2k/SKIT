@@ -132,7 +132,7 @@ export default function RecipeDetail() {
             <li key={i} className="flex items-center justify-between py-2.5">
               <span className="text-warm-700">{ing.name}</span>
               <span className="text-sm font-medium text-primary-600 bg-primary-50 px-2.5 py-0.5 rounded-full">
-                {ing.qty !== null ? `${ing.qty}${ing.unit || ''}` : `~${ing.raw || '适量'}`}
+                {ing.qty !== null ? `${ing.qty}${ing.unit || ''}` : '适量'}
               </span>
             </li>
           ))}

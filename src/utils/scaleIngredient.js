@@ -4,7 +4,7 @@ export function scaleIngredient(ingredient, servings) {
   const clamped = Math.max(MIN_SERVINGS, Math.min(MAX_SERVINGS, Math.round(servings)))
 
   if (ingredient.qty === null || ingredient.qty === undefined) {
-    return { ...ingredient, qty: null, display: `~${ingredient.raw || ingredient.name}` }
+    return { ...ingredient, qty: null, display: '适量' }
   }
 
   let scaledQty
