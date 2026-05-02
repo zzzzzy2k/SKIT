@@ -69,13 +69,13 @@ export default function History() {
         {historyRecipes.map((item, i) => (
           <div
             key={item.id}
-            className="relative animate-fade-in-up"
+            className="animate-fade-in-up"
             style={{ animationDelay: `${i * 60}ms` }}
           >
             <RecipeCard recipe={item.recipe} />
-            <span className="absolute top-3 right-3 text-xs text-warm-400 bg-white/80 backdrop-blur-sm px-2 py-0.5 rounded-full">
+            <p className="text-xs text-warm-400 mt-1.5 text-right">
               {formatRelativeTime(item.time)}
-            </span>
+            </p>
           </div>
         ))}
       </div>
