@@ -116,7 +116,7 @@ function parseIngredient(text) {
 
 function parseCalcLine(text) {
   const cleaned = text.replace(/^[-*+]\s*/, '').trim();
-  const match = cleaned.match(/^(.+?)\s+(\d+(?:\.\d+)?)(?:\s*[～~\-]\s*\d+(?:\.\d+)?)?\s*(.*)$/);
+  const match = cleaned.match(/^(.+?)\s*(\d+(?:\.\d+)?)(?:\s*[～~\-]\s*\d+(?:\.\d+)?)?\s*(.*)$/);
   if (match) {
     return {
       name: match[1].replace(/（.*?）/g, '').trim(),
@@ -131,6 +131,30 @@ function parseCalcLine(text) {
     }
   }
   return null;
+}
+
+function splitIngredientLine(line) {
+  let text = line
+    .replace(/`/g, '')
+    .replace(/^(主料|辅料|炒料|其他配料?|调料|香料)[：:]\s*/, '')
+    .replace(/[，,]\s*$/, '')
+    .replace(/、\s*$/, '')
+    .trim();
+
+  // or/或者/或 → 取第一个选项（仅匹配括号外的 or）
+  const noParens = text.replace(/[（(][^）)]*[）)]/g, '');
+  if (/(?:or|或者)\s/.test(noParens)) {
+    text = text.replace(/\s+(?:or|或者)\s.+$/, '').trim();
+  } else if (/或者/.test(noParens)) {
+    text = text.replace(/或者.+$/, '').trim();
+  } else if (/或/.test(noParens)) {
+    text = text.replace(/或.+$/, '').trim();
+  }
+  text = text.replace(/\s+and\/or\s.+$/, '');
+
+  // 按顿号分割多个食材
+  const parts = text.split('、').map(s => s.trim()).filter(Boolean);
+  return parts.length > 0 ? parts : [line.trim()];
 }
 
 function isSeasoning(name) { return SEASONINGS.has(name); }
@@ -171,30 +195,36 @@ function parseRecipe(filePath, markdown) {
 
   const quantityMap = {};
   for (const line of calcLines) {
-    const parsed = parseCalcLine(line);
-    if (parsed) quantityMap[parsed.name] = parsed;
+    const parts = splitIngredientLine(line);
+    for (const part of parts) {
+      const parsed = parseCalcLine(part);
+      if (parsed) quantityMap[parsed.name] = parsed;
+    }
   }
 
   const parsed_ingredients = [];
   const tools = [];
 
   for (const line of rawIngredientLines) {
-    if (isTool(line)) { tools.push(line); continue; }
+    const parts = splitIngredientLine(line);
+    for (const part of parts) {
+      if (isTool(part)) { tools.push(part); continue; }
 
-    const parsed = parseIngredient(line);
-    const nameClean = parsed.name.replace(/（.*?）/g, '').trim();
-    const calcEntry = quantityMap[nameClean];
+      const parsed = parseIngredient(part);
+      const nameClean = parsed.name.replace(/（.*?）/g, '').trim();
+      const calcEntry = quantityMap[nameClean];
 
-    if (calcEntry) {
-      parsed_ingredients.push({
-        name: nameClean, qty: calcEntry.qty, unit: calcEntry.unit,
-        is_seasoning: isSeasoning(nameClean), raw: calcEntry.raw,
-      });
-    } else {
-      parsed_ingredients.push({
-        name: nameClean, qty: parsed.qty, unit: parsed.unit,
-        is_seasoning: isSeasoning(nameClean), raw: parsed.raw,
-      });
+      if (calcEntry) {
+        parsed_ingredients.push({
+          name: nameClean, qty: calcEntry.qty, unit: calcEntry.unit,
+          is_seasoning: isSeasoning(nameClean), raw: calcEntry.raw,
+        });
+      } else {
+        parsed_ingredients.push({
+          name: nameClean, qty: parsed.qty, unit: parsed.unit,
+          is_seasoning: isSeasoning(nameClean), raw: parsed.raw,
+        });
+      }
     }
   }
 
