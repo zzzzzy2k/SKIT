@@ -47,46 +47,50 @@ export default function Layout() {
 
       {/* Floating glass bottom nav */}
       <nav className="fixed bottom-0 left-0 right-0 z-50 px-4 pb-3">
-        <div className="max-w-sm mx-auto glass-strong rounded-2xl px-2 py-1.5 flex items-center">
+        <div className="max-w-sm mx-auto glass-strong rounded-2xl px-2 py-2 flex items-center shadow-lg">
           <NavLink
             to="/"
             end
             className={({ isActive }) =>
-              `flex-1 flex flex-col items-center gap-0.5 py-2 rounded-xl transition-all duration-200 ${
+              `flex-1 flex flex-col items-center gap-1 py-2 rounded-xl transition-all duration-200 ${
                 isActive
-                  ? 'text-primary-600 bg-primary-50/60'
-                  : 'text-warm-400 hover:text-warm-600'
+                  ? 'text-primary-600 bg-primary-100/70 shadow-sm font-semibold'
+                  : 'text-warm-500 hover:text-warm-700 hover:bg-warm-100/50'
               }`
             }
           >
-            <HomeIcon className="w-5 h-5" />
-            <span className="text-xs font-medium">首页</span>
+            <HomeIcon className="w-5.5 h-5.5" />
+            <span className="text-xs">首页</span>
           </NavLink>
           <NavLink
             to="/favorites"
             className={({ isActive }) =>
-              `flex-1 flex flex-col items-center gap-0.5 py-2 rounded-xl transition-all duration-200 ${
+              `flex-1 flex flex-col items-center gap-1 py-2 rounded-xl transition-all duration-200 ${
                 isActive
-                  ? 'text-accent-500 bg-accent-50/60'
-                  : 'text-warm-400 hover:text-warm-600'
+                  ? 'text-accent-500 bg-accent-100/70 shadow-sm font-semibold'
+                  : 'text-warm-500 hover:text-warm-700 hover:bg-warm-100/50'
               }`
             }
           >
-            <HeartIcon className="w-5 h-5" filled={false} />
-            <span className="text-xs font-medium">收藏</span>
+            {({ isActive }) => (
+              <>
+                <HeartIcon className="w-5.5 h-5.5" filled={isActive} />
+                <span className="text-xs">收藏</span>
+              </>
+            )}
           </NavLink>
           <NavLink
             to="/about"
             className={({ isActive }) =>
-              `flex-1 flex flex-col items-center gap-0.5 py-2 rounded-xl transition-all duration-200 ${
+              `flex-1 flex flex-col items-center gap-1 py-2 rounded-xl transition-all duration-200 ${
                 isActive
-                  ? 'text-olive-600 bg-olive-50/60'
-                  : 'text-warm-400 hover:text-warm-600'
+                  ? 'text-olive-600 bg-olive-100/70 shadow-sm font-semibold'
+                  : 'text-warm-500 hover:text-warm-700 hover:bg-warm-100/50'
               }`
             }
           >
-            <InfoIcon className="w-5 h-5" />
-            <span className="text-xs font-medium">说明</span>
+            <InfoIcon className="w-5.5 h-5.5" />
+            <span className="text-xs">说明</span>
           </NavLink>
         </div>
       </nav>
