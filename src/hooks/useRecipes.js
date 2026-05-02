@@ -11,7 +11,7 @@ export function useRecipes() {
     if (cache) return
 
     setLoading(true)
-    fetch('/recipes.json')
+    fetch('/api/recipes')
       .then(res => {
         if (!res.ok) throw new Error(`Failed to load recipes: ${res.status}`)
         return res.json()

@@ -9,7 +9,7 @@ const ROOT = join(__dirname, '..');
 
 const INGREDIENT_HEADINGS = ['必备原料和工具', '原材料', '原料', '食材', '配料'];
 const CALC_HEADINGS = ['计算'];
-const STEP_HEADINGS = ['操作步骤', '步骤', '做法', '制作'];
+const STEP_HEADINGS = ['操作步骤', '操作', '步骤', '制作'];
 const TIPS_HEADINGS = ['附加内容', '附加', '提示', '小贴士', '注意事项'];
 
 const SEASONINGS = new Set([
@@ -94,6 +94,8 @@ function findSectionByHeadings(tokens, keywords) {
 
   for (const token of tokens) {
     if (token.type === 'heading') {
+      // Skip H1 (title), only match H2+ for sections
+      if (token.depth <= 1) continue;
       const headingText = extractText(token).trim();
       if (keywords.some(kw => headingText.includes(kw))) {
         inSection = true;

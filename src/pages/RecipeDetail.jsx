@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { useRecipes } from '../hooks/useRecipes'
+import { useRecipeDetail } from '../hooks/useRecipeDetail'
 import { useFavorites } from '../hooks/useFavorites'
 import { scaleIngredients } from '../utils/scaleIngredient'
 import { DEFAULT_SERVINGS } from '../utils/constants'
@@ -56,12 +56,11 @@ const categoryLabels = {
 
 export default function RecipeDetail() {
   const { id } = useParams()
-  const { recipes, loading } = useRecipes()
+  const decodedId = decodeURIComponent(id)
+  const { recipe, loading, error } = useRecipeDetail(decodedId)
   const { isFavorite, toggleFavorite } = useFavorites()
   const [servings, setServings] = useState(DEFAULT_SERVINGS)
   const [showShoppingList, setShowShoppingList] = useState(false)
-
-  const recipe = recipes.find(r => r.id === decodeURIComponent(id))
 
   const scaledIngredients = useMemo(
     () => recipe ? scaleIngredients(recipe.parsed_ingredients, servings) : [],
@@ -76,8 +75,8 @@ export default function RecipeDetail() {
     )
   }
 
-  if (!recipe) {
-    return <EmptyState message="菜谱未找到" actionText="返回首页" actionTo="/" />
+  if (error || !recipe) {
+    return <EmptyState message={error || "菜谱未找到"} actionText="返回首页" actionTo="/" />
   }
 
   const fav = isFavorite(recipe.id)
